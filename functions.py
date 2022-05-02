@@ -15,3 +15,26 @@ def checkCreateFile(nameFile):
   except: pass
   location=f'./{nameFile}'
   return location
+
+#De una lista de palabras a buscar en un PDF retorna una lista de coords
+def ccWords(listWords,pdfAdress):
+
+    file=fitz.open(pdfAdress)
+    coord=[]
+
+    for i, page in enumerate(file.pages(), start=1):
+        coord.append(f'page: {i}')
+        pageword=page.get_text('words')
+        for word in pageword:
+            if word[4] in listWords:
+                coord.append(word)
+
+    return coord
+
+#Guarda elementos de una lista en un txt
+def saveListTxt(lista):
+    ahora=now()
+    with open(f"./file_{ahora}.txt", "w") as output:
+        for row in lista:
+            output.write(str(row)+'\n')
+            

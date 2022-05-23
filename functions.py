@@ -41,7 +41,7 @@ def saveListTxt(lista):
 #Devuelve un string a partir de una frase y dos strings de referencia que
 #delimitan el inicio y el fin del string. No toma los string de incio y fin.
 #Nota: el código es mejorable.
-def wordBetween(pStart,pEnd,phrase):
+def wordBetween(pStart,pEnd,phrase,include):
     char1=pStart[0]
     char2=pEnd[0]
     val1,val2=False,False
@@ -67,6 +67,9 @@ def wordBetween(pStart,pEnd,phrase):
         if val2: break
 
     finalWord=finalWord[len(pStart):]
+
+    if include==True: finalWord=pStart+finalWord+pEnd
+
     return finalWord
 
 #A partir de una lista de coordenadas XY y la ubicación de un archivo PDF busca
@@ -87,3 +90,5 @@ def wordPDFdic (listCC,pdfAddress):
         wordDic[i]=wordList
 
     return wordDic
+
+    

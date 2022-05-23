@@ -91,4 +91,15 @@ def wordPDFdic (listCC,pdfAddress):
 
     return wordDic
 
-    
+#Crea una lista de palabras con toda su meta data a partir de una coordenada xy
+def listWordCC(x,y,pdfAddress):
+    file=fitz.open(pdfAddress)
+    wordList=[]
+
+    for page in file:
+        pageWords=page.get_text('words')
+        for word in pageWords:
+            if word[0]==x and word[1]==y:
+                wordList.append(word)
+
+    return wordList

@@ -109,5 +109,7 @@ if __name__=='__main__':
     root.wm_title('EXTRACTOR PDF')
     app=v1Window(root)
 
+    
+
     app.mainloop()
         

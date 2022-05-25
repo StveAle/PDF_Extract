@@ -61,6 +61,28 @@ class campoFrame(tk.Frame):
         nameCampoTbx.grid(row=1,column=1, sticky='n')
         fBuscarCbx.grid(row=2,column=1, sticky='n')
 
+        self.frameBotton=tk.Frame(self.master,padx=5,pady=5)
+        self.frameBotton.grid(row=3,columnspan=2, sticky='w')
+
+        ccFrame(self.frameBotton)
+
+class ccFrame(tk.Frame):
+    def __init__(self,master=None):
+        super().__init__(master)
+        self.master=master
+        self.createWidgets()
+
+    def createWidgets(self):
+        xlabel=tk.Label(self.master,text='X: ',padx=5,pady=5)
+        ylabel=tk.Label(self.master,text='Y: ',padx=5,pady=5)
+        
+        xtxt=tk.Entry(self.master)
+        ytxt=tk.Entry(self.master)
+        
+        xlabel.grid(row=0,column=0, sticky='e')
+        ylabel.grid(row=1,column=0, sticky='e')
+        xtxt.grid(row=0,column=1, sticky='w')
+        ytxt.grid(row=1,column=1, sticky='w')
 
 if __name__=='__main__':
     root=tk.Tk()

@@ -79,17 +79,24 @@ class v1Window(tk.Frame):
         #Botones
         self.frameButton=tk.Frame(self.frameLateral,padx=10,pady=10)
         self.frameButton.grid(row=2,column=0, sticky='nw')
-        self.checkBtn=tk.Button(self.frameButton,padx=5,text='Check')
+        self.checkBtn=tk.Button(self.frameButton,padx=5,text='Check',command=self.check)
         self.createBtn=tk.Button(self.frameButton,padx=5,text='Crear')
-        self.closeBtn=tk.Button(self.frameButton,padx=5,text='Cerrar')
+        self.closeBtn=tk.Button(self.frameButton,padx=5,text='Cerrar',command=self.cerrar)
         self.checkBtn.pack(side='left',padx=5)
         self.createBtn.pack(side='left',padx=5)
         self.closeBtn.pack(side='bottom',padx=5)
 
     def crearCampos(self):
         nCampos=self.cantCampotxt.get()
-        for _ in range(int(nCampos)):
-            campoFrame(self.cFrame) 
+        self.xtxt=[]
+        self.ytxt=[]
+
+        for i in range(int(nCampos)):
+            cFrame=campoFrame(self.cFrame)
+            cFrame.nCampoTbx.insert(0,i+1)
+            self.x,self.y=cFrame.getObjects()
+            self.xtxt.append(self.x)        
+            self.ytxt.append(self.y)        
 
     def openExplorer(self):
         self.file=filedialog.askopenfilename(title='ABRIR PDF', filetypes=[('Archivos PDF','*.pdf')])
@@ -100,6 +107,14 @@ class v1Window(tk.Frame):
         pdfView=pdfload.pdf_view(self.pdfViewFrame,pdf_location=open(r'{}'.format(self.file),'r'),width=77,height=100)
         pdfView.pack()
         
+    def cerrar(self):
+        self.master.destroy()
+
+    def check(self):
+       print(self.xtxt)
+       print(self.ytxt)
+       for i in self.xtxt:
+           print(i.get())
         
 class campoFrame(tk.Frame):
 
@@ -119,18 +134,22 @@ class campoFrame(tk.Frame):
         nameCampolbl.grid(row=1,column=0, sticky='ne')
         fBuscarlbl.grid(row=2,column=0, sticky='ne')
 
-        nCampoTbx=tk.Entry(self.qFrame)
+        self.nCampoTbx=tk.Entry(self.qFrame,width=4)
         nameCampoTbx=tk.Entry(self.qFrame)
         fBuscarCbx=ttk.Combobox(self.qFrame, state='readonly')
 
-        nCampoTbx.grid(row=0,column=1, sticky='n')
-        nameCampoTbx.grid(row=1,column=1, sticky='n')
-        fBuscarCbx.grid(row=2,column=1, sticky='n')
+        self.nCampoTbx.grid(row=0,column=1, sticky='nw')
+        nameCampoTbx.grid(row=1,column=1, sticky='nw')
+        fBuscarCbx.grid(row=2,column=1, sticky='nw')
 
         self.frameBotton=tk.Frame(self.qFrame,padx=5,pady=5)
         self.frameBotton.grid(row=3,columnspan=2, sticky='w')
 
-        ccFrame(self.frameBotton)
+        cFrameObj=ccFrame(self.frameBotton)
+        self.x,self.y=cFrameObj.getObjects()
+
+    def getObjects(self):
+        return self.x,self.y
 
 class ccFrame(tk.Frame):
     def __init__(self,master=None):
@@ -142,17 +161,22 @@ class ccFrame(tk.Frame):
         xlabel=tk.Label(self.master,text='X: ',padx=5,pady=5)
         ylabel=tk.Label(self.master,text='Y: ',padx=5,pady=5)
         
-        xtxt=tk.Entry(self.master)
-        ytxt=tk.Entry(self.master)
+        self.xtxt=tk.Entry(self.master)
+        self.ytxt=tk.Entry(self.master)
         
         xlabel.grid(row=0,column=0, sticky='e')
         ylabel.grid(row=1,column=0, sticky='e')
-        xtxt.grid(row=0,column=1, sticky='w')
-        ytxt.grid(row=1,column=1, sticky='w')
+        self.xtxt.grid(row=0,column=1, sticky='w')
+        self.ytxt.grid(row=1,column=1, sticky='w')
+        
+
+    def getObjects(self):        
+        return self.xtxt, self.ytxt
+        
 
 if __name__=='__main__':
     root=tk.Tk()
-    root.wm_title('EXTRACTOR PDF')
+    root.wm_title('EXTRACTOR PDF-Alpha 0.1')
     app=v1Window(root)
 
     

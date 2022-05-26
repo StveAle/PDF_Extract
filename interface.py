@@ -1,7 +1,7 @@
 import tkinter as tk
-from tkinter import Y, Grid, ttk
+from tkinter import ttk
 from tkinter import filedialog
-from turtle import left
+from tkPDFViewer import tkPDFViewer as tkpdf
 from functions import *
 
 ############################################################################################
@@ -43,7 +43,7 @@ class v1Window(tk.Frame):
         #Frame top
         self.frameTop=tk.Frame(self.frameCanvas)
         self.frameTop.columnconfigure(1,weight=1)
-        self.frameTop.rowconfigure(0,weight=1)
+        #self.frameTop.rowconfigure(0,weight=1)
         self.frameTop.grid(row=0,columnspan=3,sticky='news',ipadx=5,ipady=5)
 
         #Contenido frame top
@@ -54,23 +54,31 @@ class v1Window(tk.Frame):
         self.addresstxt.grid(row=0,column=1, sticky='ew')
         self.buscarBtn.grid(row=0,column=2,padx=10)
 
+        #PDF
+        self.pdfViewFrame=tk.Frame(self.frameCanvas)
+        self.pdfViewFrame.grid(row=1,column=1,sticky='news',rowspan=12)
+
+        #Frame lateral
+        self.frameLateral=tk.Frame(self.frameCanvas)
+        self.frameLateral.grid(row=1,column=0,sticky='nw')
+
         #Cantidad de campos
-        self.cantFrame=tk.Frame(self.frameCanvas)
-        self.cantFrame.grid(row=1,column=0,sticky='w',padx=(5,5))
+        self.cantFrame=tk.Frame(self.frameLateral)
+        self.cantFrame.grid(row=0,column=0,sticky='nw',padx=(5,5))
         self.cantCampolbl=tk.Label(self.cantFrame,text='Cantidad de columnas: ',padx=5,pady=5)
         self.cantCampotxt=tk.Entry(self.cantFrame, width=3)
         self.crearCamposButton=tk.Button(self.cantFrame,text='Crear Campos',command=self.crearCampos)
-        self.cantCampolbl.pack(side='left')
-        self.cantCampotxt.pack(side='left')
-        self.crearCamposButton.pack(side='left',padx=27)
+        self.cantCampolbl.pack(side='left',anchor='n')
+        self.cantCampotxt.pack(side='left',anchor='n')
+        self.crearCamposButton.pack(side='left',padx=27,anchor='n')
 
         #Frame parametros de extracción
-        self.cFrame=tk.Frame(self.frameCanvas,padx=5, pady=5,borderwidth=2, relief='ridge')
-        self.cFrame.grid(row=2,column=0, sticky='w')
+        self.cFrame=tk.Frame(self.frameLateral,padx=5, pady=5,borderwidth=1, relief='solid')
+        self.cFrame.grid(row=1,column=0, sticky='nw')
 
         #Botones
-        self.frameButton=tk.Frame(self.frameCanvas,padx=10,pady=10)
-        self.frameButton.grid(row=3,column=0, sticky='e')
+        self.frameButton=tk.Frame(self.frameLateral,padx=10,pady=10)
+        self.frameButton.grid(row=2,column=0, sticky='nw')
         self.checkBtn=tk.Button(self.frameButton,padx=5,text='Check')
         self.createBtn=tk.Button(self.frameButton,padx=5,text='Crear')
         self.closeBtn=tk.Button(self.frameButton,padx=5,text='Cerrar')
@@ -87,7 +95,11 @@ class v1Window(tk.Frame):
         self.file=filedialog.askopenfilename(title='ABRIR PDF', filetypes=[('Archivos PDF','*.pdf')])
         self.addresstxt.delete(0,'end')
         self.addresstxt.insert(0,self.file)
-        return self.file
+        print(self.file)
+        pdfload=tkpdf.ShowPdf()
+        pdfView=pdfload.pdf_view(self.pdfViewFrame,pdf_location=open(r'{}'.format(self.file),'r'),width=77,height=100)
+        pdfView.pack()
+        
         
 class campoFrame(tk.Frame):
 
@@ -98,14 +110,14 @@ class campoFrame(tk.Frame):
 
     def createWidgets(self):
         self.qFrame=tk.Frame(self.master,padx=3,pady=3,borderwidth=1,relief=tk.GROOVE)
-        self.qFrame.pack(side='top')
+        self.qFrame.pack(side=tk.TOP,anchor='nw')
         nCampolbl=tk.Label(self.qFrame,text='N campo: ',padx=5,pady=5)
         nameCampolbl=tk.Label(self.qFrame,text='Nompre del campo: ',padx=5,pady=5)
         fBuscarlbl=tk.Label(self.qFrame,text='Forma de buscar: ',padx=5,pady=5)    
         
-        nCampolbl.grid(row=0,column=0, sticky='e')
-        nameCampolbl.grid(row=1,column=0, sticky='e')
-        fBuscarlbl.grid(row=2,column=0, sticky='e')
+        nCampolbl.grid(row=0,column=0, sticky='ne')
+        nameCampolbl.grid(row=1,column=0, sticky='ne')
+        fBuscarlbl.grid(row=2,column=0, sticky='ne')
 
         nCampoTbx=tk.Entry(self.qFrame)
         nameCampoTbx=tk.Entry(self.qFrame)

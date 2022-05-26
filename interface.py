@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Grid, ttk
+from tkinter import filedialog
 from functions import *
 
 class v1Window(tk.Frame):
@@ -16,46 +17,59 @@ class v1Window(tk.Frame):
     def createWidgets(self):
         #Frame principal
         self.frameMain=tk.Frame(self.master)
-        self.frameMain.grid(row=0,column=3,padx=(10,10),pady=(5,5) )
+        self.master.columnconfigure(0,weight=1)
+        self.master.rowconfigure(0,weight=1)
+        self.frameMain.grid(row=0,column=0,padx=(10,10),pady=(5,5),sticky='news' )
+        self.frameMain.columnconfigure(0,weight=1)
 
         #Frame top
         self.frameTop=tk.Frame(self.frameMain)
-        self.frameTop.grid(row=0,columnspan=3)
+        self.frameTop.columnconfigure(1,weight=1)
+        self.frameTop.rowconfigure(0,weight=1)
+        self.frameTop.grid(row=0,columnspan=3,sticky='news',ipadx=5,ipady=5)
+        
 
         #Contenido frame top
         self.directlbl=tk.Label(self.frameTop,text='Dirección: ',padx=5,pady=5)
-        val='C: '
-        self.addresstxt=tk.Entry(self.frameTop,width=50,textvariable=val)
-        self.buscarBtn=tk.Button(self.frameTop,text='Buscar',padx=5,pady=5)
+        self.addresstxt=tk.Entry(self.frameTop,width=80,textvariable='')
+        self.buscarBtn=tk.Button(self.frameTop,text='Buscar',command=self.openExplorer,padx=5,pady=5)
         #self.txt1.grid(row=0,column=2)
         #self.txt1.insert(0,'C:\\')
-        self.directlbl.pack(side='left')
-        self.addresstxt.pack(side='left')
-        self.buscarBtn.pack(side='left')
+        self.directlbl.grid(row=0,column=0)
+        self.addresstxt.grid(row=0,column=1, sticky='ew')
+        self.buscarBtn.grid(row=0,column=2,padx=10)
 
         #Cantidad de campos
         self.cantFrame=tk.Frame(self.frameMain)
-        self.cantFrame.grid(row=1,column=0,sticky='w',padx=(20,5))
+        self.cantFrame.grid(row=1,column=0,sticky='w',padx=(5,5))
         self.cantCampolbl=tk.Label(self.cantFrame,text='Cantidad de columnas: ',padx=5,pady=5)
         self.cantCampotxt=tk.Entry(self.cantFrame, width=3)
+        self.crearCamposButton=tk.Button(self.cantFrame,text='Crear Campos')
         self.cantCampolbl.pack(side='left')
         self.cantCampotxt.pack(side='left')
+        self.crearCamposButton.pack(side='left',padx=27)
 
         #Frame parametros de extracción
         self.cFrame=tk.Frame(self.frameMain,padx=5, pady=5,borderwidth=2, relief='ridge')
-        self.cFrame.grid(row=2,column=0)
+        self.cFrame.grid(row=2,column=0, sticky='w')
         campoFrame(self.cFrame)
 
         #Botones
         self.frameButton=tk.Frame(self.frameMain,padx=10,pady=10)
-        self.frameButton.grid(row=3,column=0)
+        self.frameButton.grid(row=3,column=0, sticky='e')
         self.checkBtn=tk.Button(self.frameButton,padx=5,text='Check')
         self.createBtn=tk.Button(self.frameButton,padx=5,text='Crear')
         self.closeBtn=tk.Button(self.frameButton,padx=5,text='Cerrar')
-        self.checkBtn.pack(side='left')
-        self.createBtn.pack(side='left')
-        self.closeBtn.pack(side='bottom')
+        self.checkBtn.pack(side='left',padx=5)
+        self.createBtn.pack(side='left',padx=5)
+        self.closeBtn.pack(side='bottom',padx=5)
 
+
+    def openExplorer(self):
+        self.file=filedialog.askopenfilename(title='ABRIR PDF', filetypes=[('Archivos PDF','*.pdf')])
+        self.addresstxt.delete(0,'end')
+        self.addresstxt.insert(0,self.file)
+        return self.file
         
 class campoFrame(tk.Frame):
 

@@ -90,13 +90,15 @@ class v1Window(tk.Frame):
         nCampos=self.cantCampotxt.get()
         self.xtxt=[]
         self.ytxt=[]
+        self.campotxt=[]
 
         for i in range(int(nCampos)):
             cFrame=campoFrame(self.cFrame)
             cFrame.nCampoTbx.insert(0,i+1)
-            self.x,self.y=cFrame.getObjects()
+            self.x,self.y,self.campoName=cFrame.getObjects()
             self.xtxt.append(self.x)        
-            self.ytxt.append(self.y)        
+            self.ytxt.append(self.y)
+            self.campotxt.append(self.campoName)        
 
     def openExplorer(self):
         self.file=filedialog.askopenfilename(title='ABRIR PDF', filetypes=[('Archivos PDF','*.pdf')])
@@ -116,17 +118,13 @@ class v1Window(tk.Frame):
             x.append(ix.get())
             y.append(iy.get())
         
-        listaCampos=[]
-        
+        self.listaCampos={}
+        i=0
         for ix,iy in zip(x,y):
             words=listWordCC(float(ix),float(iy),r'{}'.format(self.file))
-            listaCampos.append(words)
-            print(type(ix))
-            print(type(iy))
-            print(ix)
-            print(iy)
-
-        print(listaCampos[0])
+            self.listaCampos[self.campotxt[i]]=words
+            i+=1
+        print(self.listaCampos)
 
         
 class campoFrame(tk.Frame):
@@ -148,11 +146,11 @@ class campoFrame(tk.Frame):
         fBuscarlbl.grid(row=2,column=0, sticky='ne')
 
         self.nCampoTbx=tk.Entry(self.qFrame,width=4)
-        nameCampoTbx=tk.Entry(self.qFrame)
+        self.nameCampoTbx=tk.Entry(self.qFrame)
         fBuscarCbx=ttk.Combobox(self.qFrame, state='readonly')
 
         self.nCampoTbx.grid(row=0,column=1, sticky='nw')
-        nameCampoTbx.grid(row=1,column=1, sticky='nw')
+        self.nameCampoTbx.grid(row=1,column=1, sticky='nw')
         fBuscarCbx.grid(row=2,column=1, sticky='nw')
 
         self.frameBotton=tk.Frame(self.qFrame,padx=5,pady=5)
@@ -162,7 +160,7 @@ class campoFrame(tk.Frame):
         self.x,self.y=cFrameObj.getObjects()
 
     def getObjects(self):
-        return self.x,self.y
+        return self.x,self.y,self.nameCampoTbx
 
 class ccFrame(tk.Frame):
     def __init__(self,master=None):

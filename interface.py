@@ -111,10 +111,23 @@ class v1Window(tk.Frame):
         self.master.destroy()
 
     def check(self):
-       print(self.xtxt)
-       print(self.ytxt)
-       for i in self.xtxt:
-           print(i.get())
+        x,y=[],[]
+        for ix,iy in zip(self.xtxt,self.ytxt):
+            x.append(ix.get())
+            y.append(iy.get())
+        
+        listaCampos=[]
+        
+        for ix,iy in zip(x,y):
+            words=listWordCC(float(ix),float(iy),r'{}'.format(self.file))
+            listaCampos.append(words)
+            print(type(ix))
+            print(type(iy))
+            print(ix)
+            print(iy)
+
+        print(listaCampos[0])
+
         
 class campoFrame(tk.Frame):
 

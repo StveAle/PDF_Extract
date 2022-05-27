@@ -43,7 +43,6 @@ class v1Window(tk.Frame):
         #Frame top
         self.frameTop=tk.Frame(self.frameCanvas)
         self.frameTop.columnconfigure(1,weight=1)
-        #self.frameTop.rowconfigure(0,weight=1)
         self.frameTop.grid(row=0,columnspan=3,sticky='news',ipadx=5,ipady=5)
 
         #Contenido frame top
@@ -80,7 +79,7 @@ class v1Window(tk.Frame):
         self.frameButton=tk.Frame(self.frameLateral,padx=10,pady=10)
         self.frameButton.grid(row=2,column=0, sticky='nw')
         self.checkBtn=tk.Button(self.frameButton,padx=5,text='Check',command=self.check)
-        self.createBtn=tk.Button(self.frameButton,padx=5,text='Crear')
+        self.createBtn=tk.Button(self.frameButton,padx=5,text='Crear', command=self.crear)
         self.closeBtn=tk.Button(self.frameButton,padx=5,text='Cerrar',command=self.cerrar)
         self.checkBtn.pack(side='left',padx=5)
         self.createBtn.pack(side='left',padx=5)
@@ -128,7 +127,10 @@ class v1Window(tk.Frame):
         print(self.listaCampos)
 
     def crear(self):
-        pass
+        self.saveAsFile=filedialog.asksaveasfile(title='GUARDAR COMO',defaultextension='.xlsx', 
+                                                filetypes=[('Archivos EXCEL','*.xlsx')])
+        
+        saveExceltoDicInterface(self.listaCampos,self.saveAsFile.name)
 
 class campoFrame(tk.Frame):
 

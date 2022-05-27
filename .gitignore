@@ -1,4 +1,5 @@
 *.txt
+*.xlsx
 __pycache__
 pdfExtractEnv
 pruebas.py

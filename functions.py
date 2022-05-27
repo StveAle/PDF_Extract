@@ -1,5 +1,6 @@
 import fitz
 from datetime import datetime
+import openpyxl
 import os
 
 #retorna un string con la fecha/hora del sistema, 
@@ -91,15 +92,48 @@ def wordPDFdic (listCC,pdfAddress):
 
     return wordDic
 
-#Crea una lista de palabras con toda su meta data a partir de una coordenada xy
+#Crea un diccionario con toda su meta data a partir de una coordenada xy
 def listWordCC(x,y,pdfAddress):
     file=fitz.open(pdfAddress)
-    wordList=[]
+    wordList={}
 
-    for page in file:
+    for nPage, page in enumerate(file,start=1):
         pageWords=page.get_text('words')
         for word in pageWords:
             if word[0]==x and word[1]==y:
-                wordList.append(word)
+                wordList[nPage]=word
 
     return wordList
+
+#A partir de un diccionario de diccionarios de campos guarda una tabla en un excel
+def saveExceltoDic(dicWord,filename,address):
+    wb=openpyxl.Workbook()
+    ws=wb.create_sheet('BD')
+    del wb['Sheet']
+
+    for i, campo in enumerate(dicWord, start=1):
+        ws.cell(row=1,column=i).value=campo
+        for _, items in enumerate(dicWord[campo],start=0):
+            word=dicWord[campo][4]
+            ws.cell(row=items+1,column=i).value=word
+    
+    wb.save(f'{address}/{filename}.xlsx')
+
+#funcion exclusiva para trabajar con el guardado de la interface.
+def saveExceltoDicInterface(dicWord,address):
+    wb=openpyxl.Workbook()
+    ws=wb.create_sheet('BD')
+    del wb['Sheet']
+
+    for i, campo in enumerate(dicWord, start=1):
+        ws.cell(row=1,column=i).value=campo
+        for _, items in enumerate(dicWord[campo],start=0):
+            word=dicWord[campo][items][4]
+            ws.cell(row=items+1,column=i).value=word
+    
+    wb.save(address)
+    wb.close()
+
+        
+    
+

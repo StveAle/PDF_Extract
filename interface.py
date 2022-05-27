@@ -122,11 +122,14 @@ class v1Window(tk.Frame):
         i=0
         for ix,iy in zip(x,y):
             words=listWordCC(float(ix),float(iy),r'{}'.format(self.file))
-            self.listaCampos[self.campotxt[i]]=words
+            self.listaCampos[self.campotxt[i].get()]=words
+            print(self.campotxt[i].get())
             i+=1
         print(self.listaCampos)
 
-        
+    def crear(self):
+        pass
+
 class campoFrame(tk.Frame):
 
     def __init__(self,master=None):

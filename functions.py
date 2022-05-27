@@ -132,7 +132,7 @@ def saveExceltoDicInterface(dicWord,address):
             ws.cell(row=items+1,column=i).value=word
     
     wb.save(address)
-    wb.close()
+    
 
         
     

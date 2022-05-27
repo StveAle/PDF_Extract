@@ -192,7 +192,7 @@ class ccFrame(tk.Frame):
 
 if __name__=='__main__':
     root=tk.Tk()
-    root.wm_title('EXTRACTOR PDF-Alpha 0.1')
+    root.wm_title('EXTRACTOR PDF-pre Alpha 0.1')
     app=v1Window(root)
 
     

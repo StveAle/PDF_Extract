@@ -27,21 +27,32 @@ class v1Window(tk.Frame):
         self.master.columnconfigure(0,weight=1)
         self.master.rowconfigure(0,weight=1)
 
-        self.frameMain=tk.Frame(self.master)
+        self.frameMain=tk.Frame(self.master) #FrameMain
         self.frameMain.pack(fill='both',expand=True)
 
-        self.frameCanvas=tk.Canvas(self.frameMain)
+        self.frameCanvas=tk.Canvas(self.frameMain) #Canvas
         self.frameCanvas.pack(side='left',padx=(10,10),pady=(5,5),expand=True,fill=tk.BOTH)
-        self.frameCanvas.columnconfigure(0,weight=1)
-
+        self.frameCanvas.columnconfigure(0,weight=1)     
+        
         #Scrollbar
         self.scrollbarMain=ttk.Scrollbar(self.frameMain,orient=tk.VERTICAL,command=self.frameCanvas.yview)
-        self.scrollbarMain.pack(side='right',fill=tk.Y)
+        
+        self.scrollFrame=ttk.Frame(self.frameCanvas) #scrollFrame
+        self.scrollFrame.pack(fill='both', expand=True, side='left')
+        self.frameCanvas.create_window((0,0), window=self.scrollFrame,anchor='nw')
+        
         self.frameCanvas.configure(yscrollcommand=self.scrollbarMain.set)
-        self.frameCanvas.bind('<Configure>',lambda e: self.frameCanvas.configure(scrollregion=self.frameCanvas.bbox('all')))
+        self.scrollFrame.bind(
+            "<Configure>",
+            lambda e: self.frameCanvas.configure(
+                scrollregion=self.frameCanvas.bbox("all")
+                )
+            )
+        self.frameCanvas.pack(fill='both', expand=True,side='left')
+        self.scrollbarMain.pack(side='right',fill=tk.Y)
 
         #Frame top
-        self.frameTop=tk.Frame(self.frameCanvas)
+        self.frameTop=tk.Frame(self.scrollFrame)
         self.frameTop.columnconfigure(1,weight=1)
         self.frameTop.grid(row=0,columnspan=3,sticky='news',ipadx=5,ipady=5)
 
@@ -54,11 +65,11 @@ class v1Window(tk.Frame):
         self.buscarBtn.grid(row=0,column=2,padx=10)
 
         #PDF
-        self.pdfViewFrame=tk.Frame(self.frameCanvas)
+        self.pdfViewFrame=tk.Frame(self.scrollFrame)
         self.pdfViewFrame.grid(row=1,column=1,sticky='news',rowspan=12)
 
         #Frame lateral
-        self.frameLateral=tk.Frame(self.frameCanvas)
+        self.frameLateral=tk.Frame(self.scrollFrame)
         self.frameLateral.grid(row=1,column=0,sticky='nw')
 
         #Cantidad de campos

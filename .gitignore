@@ -2,5 +2,6 @@
 *.xlsx
 __pycache__
 pdfExtractEnv
+reportes
 pruebas.py
 pruebas

@@ -189,13 +189,10 @@ class ccFrame(tk.Frame):
     def getObjects(self):        
         return self.xtxt, self.ytxt
         
-
 if __name__=='__main__':
     root=tk.Tk()
     root.wm_title('EXTRACTOR PDF-pre Alpha 0.1')
     app=v1Window(root)
-
-    
 
     app.mainloop()
         

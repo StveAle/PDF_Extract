@@ -105,7 +105,7 @@ def listWordCC(x,y,pdfAddress):
 
     return wordList
 
-#A partir de un diccionario de diccionarios de campos guarda una tabla en un excel
+#A partir de un diccionario de campos guarda una tabla en un excel
 def saveExceltoDic(dicWord,filename,address):
     wb=openpyxl.Workbook()
     ws=wb.create_sheet('BD')
@@ -119,7 +119,7 @@ def saveExceltoDic(dicWord,filename,address):
     
     wb.save(f'{address}/{filename}.xlsx')
 
-#funcion exclusiva para trabajar con el guardado de la interface.
+#funcion exclusiva para trabajar con el guardado en la la interface.
 def saveExceltoDicInterface(dicWord,address):
     wb=openpyxl.Workbook()
     ws=wb.create_sheet('BD')

@@ -2,6 +2,7 @@ import fitz
 from datetime import datetime
 import openpyxl
 import os
+import sys
 
 #retorna un string con la fecha/hora del sistema, 
 # se usa para evitar duplicados en archivos
@@ -11,10 +12,10 @@ def now():
     return now
 
 #Verifica si una carpeta ya está creada, si no es así la crea
-def checkCreateFile(nameFile):
-  try: os.mkdir(nameFile)
+def checkCreateFolder(nameFolder):
+  try: os.mkdir(nameFolder)
   except: pass
-  location=f'./{nameFile}'
+  location=f'./{nameFolder}'
   return location
 
 #De una lista de palabras a buscar en un PDF retorna una lista de coords
@@ -132,7 +133,50 @@ def saveExceltoDicInterface(dicWord,address):
             ws.cell(row=items+1,column=i).value=word
     
     wb.save(address)
+
+#Extrae las imagenes de un pdf y las guarda en una carpeta dada como input.
+#Tiene la opción de filtrar las imagenes inferiores a x dimensiones.
+#También permite asignarles nombre a partir de una lista de nombres, en caso que
+#se pase una lista vacía se le asignará un nombre genérico a la imagen.
+def extraerImgPDF(addressPDF,destination,dimention,listName):
+  
+  file=fitz.open(addressPDF)
+  number_of_pages = len(file)
+  j=0
+
+  #iterating through each page in the pdf
+  for number in range(number_of_pages):
     
+    #muestra el % de progreso
+    n=(number/number_of_pages)*100
+    n=round(n,2)
+    print('En proceso: ', end=' ')
+    sys.stdout.write('{}%\r'.format(n))
+    if number==number_of_pages-1: print('En proceso: 100%    ')
+
+    #iterating through each image in every page of PDF       
+    for idimg,img in enumerate(file.get_page_images(number)):
+
+        #filtro por dimensiones de imagen
+        if img[2] <dimention[0] or img[3]<dimention[1]: continue
+        
+        try: name=listName[j]
+        except: name=f'page_{number+1}-img-{idimg}'
+
+        xref = img[0]
+        image = fitz.Pixmap(file, xref)
+
+        #if it is a is GRAY or RGB image
+        if image.n < 5:        
+            image.save(f"{destination}/{name}.png")
+            
+        #if it is CMYK: convert to RGB first
+        else:
+            new_image = fitz.Pixmap(fitz.csRGB, image)
+            new_image.save(f"{destination}/{name}.png")
+
+        j+=1
+
 
         
     

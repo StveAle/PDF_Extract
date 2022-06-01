@@ -7,7 +7,7 @@ from functions import *
 ############################################################################################
 #                                   PENDIENTES
 #
-# 1-Hacer que el scrollbar funcione
+# 1-Detectar coordenadas al hacer click en PDF.
 #
 ############################################################################################
 
@@ -39,9 +39,12 @@ class v1Window(tk.Frame):
         
         self.scrollFrame=ttk.Frame(self.frameCanvas) #scrollFrame
         self.scrollFrame.pack(fill='both', expand=True, side='left')
+        
+        #Ventana que será la scrolleabe, se le crea al frame canvas.
         self.frameCanvas.create_window((0,0), window=self.scrollFrame,anchor='nw')
         
         self.frameCanvas.configure(yscrollcommand=self.scrollbarMain.set)
+
         self.scrollFrame.bind(
             "<Configure>",
             lambda e: self.frameCanvas.configure(

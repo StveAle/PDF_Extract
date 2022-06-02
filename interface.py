@@ -17,7 +17,7 @@ class v1Window(tk.Frame):
     #La variable master es un objeto que contendrá este frame
     #usamos super para traer el constructor de la clase Frame a nuestra clase
     def __init__(self,master=None):
-        super().__init__(master, width=650, height=450, bg='#C0CBFC')
+        super().__init__(master, width=1050, height=450, bg='#C0CBFC')
         self.master=master
         self.createWidgets()
 
@@ -70,6 +70,7 @@ class v1Window(tk.Frame):
         #PDF
         self.pdfViewFrame=tk.Frame(self.scrollFrame)
         self.pdfViewFrame.grid(row=1,column=1,sticky='news',rowspan=12)
+        
 
         #Frame lateral
         self.frameLateral=tk.Frame(self.scrollFrame)
@@ -99,6 +100,8 @@ class v1Window(tk.Frame):
         self.createBtn.pack(side='left',padx=5)
         self.closeBtn.pack(side='bottom',padx=5)
 
+        self.bind_all('<Button-1>',self.getXY)
+
     def crearCampos(self):
         nCampos=self.cantCampotxt.get()
         self.xtxt=[]
@@ -119,9 +122,16 @@ class v1Window(tk.Frame):
         self.addresstxt.insert(0,self.file)
         print(self.file)
         pdfload=tkpdf.ShowPdf()
-        pdfView=pdfload.pdf_view(self.pdfViewFrame,pdf_location=open(r'{}'.format(self.file),'r'),width=77,height=100)
+        pdfView=pdfload.pdf_view(self.pdfViewFrame,pdf_location=open(r'{}'.format(self.file),'r'),width=110,height=100)
         pdfView.pack()
+
+    def getXY(self,event):
+        x=self.pdfViewFrame.winfo_pointerx()-self.master.winfo_rootx()-322
+        y=self.pdfViewFrame.winfo_pointery()-self.master.winfo_rooty()-51
         
+
+        print(f'X:{x} Y:{y}')
+
     def cerrar(self):
         self.master.destroy()
 

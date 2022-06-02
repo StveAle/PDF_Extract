@@ -135,10 +135,10 @@ def saveExceltoDicInterface(dicWord,address):
     wb.save(address)
 
 #Extrae las imagenes de un pdf y las guarda en una carpeta dada como input.
-#Tiene la opción de filtrar las imagenes inferiores a x dimensiones.
+#Tiene la opción de filtrar las imagenes inferiores a x dimensiones dadas como [x,y].
 #También permite asignarles nombre a partir de una lista de nombres, en caso que
 #se pase una lista vacía se le asignará un nombre genérico a la imagen.
-def extraerImgPDF(addressPDF,destination,dimention,listName):
+def extractImgPDF(addressPDF,destination,dimention,listName):
   
   file=fitz.open(addressPDF)
   number_of_pages = len(file)
